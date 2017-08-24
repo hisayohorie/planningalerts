@@ -2,26 +2,16 @@ ActiveAdmin.register CouncillorContribution do
   actions :index, :show
 
   index do
-    column :contributor
+    column(:contributor) { |contribution| contribution.attribution }
     column :created_at
     column :authority
 
     actions
   end
 
-  show title: proc {|resource| "Councillor Contribution for #{resource.authority_name}, #{resource.created_at.strftime('%B %d, %Y')}"} do
-    if resource.contributor.present?
-      panel "Councillor Contribution Details" do
-      render partial: "details", locals: {contributor: resource.contributor}
-      end
-    else
-      panel "Councillor Contribution Details" do
-        table_for resource do
-          column "Contributor" do
-            "Anonymous Contributor"
-          end
-        end
-      end
+  show title: proc {|resource| "Councillor Contribution for #{resource.authority.full_name}, #{resource.created_at.strftime('%B %d, %Y')}"} do
+    attributes_table do
+      row(:contributor) { |contribution| contribution.attribution(with_email: true) }
     end
 
     h3 "Suggested Councillors"
