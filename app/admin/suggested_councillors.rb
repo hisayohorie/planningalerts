@@ -6,5 +6,4 @@ ActiveAdmin.register SuggestedCouncillor do
     column :name
     column :email
   end
-
 end
